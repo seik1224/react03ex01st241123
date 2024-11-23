@@ -34,8 +34,6 @@ function App() {
                   </li>
                 ))
               }
-              
-             
             </ul>
           </nav>
         </div>
