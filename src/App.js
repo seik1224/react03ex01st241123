@@ -2,6 +2,11 @@ import { useRecoilState } from "recoil";
 import "./App.css";
 import { loadingProgressState } from "./store";
 import Loading from "./components/Loading";
+import { Link, Route, Routes } from "react-router-dom";
+import Home from './_views/Home';
+import About from './_views/About';
+import Services from './_views/Services';
+import Contact from './_views/Contact';
 
 function App() {
   const [progress, setProgress] = useRecoilState(loadingProgressState);
@@ -20,32 +25,29 @@ function App() {
           <div className="text-xl font-bold">Logo</div>
           <nav>
             <ul className="flex space-x-4">
-              <li>
-                <a href="#" className="hover:text-red-200">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-red-200">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-red-200">
-                  Services
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-red-200">
-                  Contact
-                </a>
-              </li>
+              {
+                ['Home', "About", "Services", 'Contact'].map((v, i)=>(
+                  <li key={v}>
+                    <Link to={i === 0  ? "/" : v.toLowerCase()} className="hover:text-red-200">
+                      {v}
+                    </Link>
+                  </li>
+                ))
+              }
+              
+             
             </ul>
           </nav>
         </div>
       </header>
 
       {/* Route : 작성해주세요. */}
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path='about' element={<About />} />
+        <Route path='services' element={<Services />} />
+        <Route path='contact' element={<Contact />} />
+      </Routes>
 
       {/* SECTION 1 : 건들지마세요. */}
       <section className="w-full h-[100vh] bg-red-500 flex items-center justify-center">
