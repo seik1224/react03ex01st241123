@@ -7,9 +7,29 @@ import Home from './_views/Home';
 import About from './_views/About';
 import Services from './_views/Services';
 import Contact from './_views/Contact';
+import { useEffect, useState } from "react";
 
 function App() {
   const [progress, setProgress] = useRecoilState(loadingProgressState);
+
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+
+  useEffect(()=>{
+    let lastScrollY = window.scrollY; // 페이지 처음 로드될때 스크롤위치
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY; // 현재 스크롤 위치
+      console.log(`현재 : ${currentScrollY} / 이전 : ${lastScrollY}`)
+
+      setIsHeaderVisible(currentScrollY < lastScrollY || currentScrollY < 10)
+      lastScrollY = currentScrollY
+    }
+
+    window.addEventListener('scroll', handleScroll, {passive:true});
+    return ()=> window.removeEventListener('scroll', handleScroll);
+
+  },[])
+  
 
   if( progress < 100){
     return <Loading />
@@ -18,7 +38,9 @@ function App() {
     <>
       {/* HEADER : 링크 올바르게 수정해주세요. */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 text-white shadow-md transition-all duration-300`}
+        className={`fixed top-0 left-0 w-full z-50 text-white shadow-md transition-all duration-300 ${
+          isHeaderVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
         style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/nav.png)` }}
       >
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
